@@ -33,14 +33,15 @@ public class PlayerController : MonoBehaviour
     private void LateUpdate()
     {
         ReadInput();
+       // ApplyRotation();
         ApplyMovement();
     
     }
     void ReadInput()
     {
         _input = new Vector2(
-           Mathf.Abs(Input.GetAxisRaw("Horizontal")) > Deadzone ? Input.GetAxis("Horizontal") : 0,
-           Mathf.Abs(Input.GetAxisRaw("Vertical")) > Deadzone ? Input.GetAxis("Vertical") : 0);
+           Mathf.Abs(Input.GetAxis("Horizontal")) > Deadzone ? Input.GetAxis("Horizontal") : 0,
+           Mathf.Abs(Input.GetAxis("Vertical")) > Deadzone ? Input.GetAxis("Vertical") : 0);
     }
     float MoveX = 0;
     float MoveZ = 0;
@@ -53,7 +54,22 @@ public class PlayerController : MonoBehaviour
     float RotateY = 0;
     void ApplyRotation()
     {
-        //transform.rotation = new Vector3();
+        RotateY = 0;
+        if(_input.x > 0)
+        {
+            RotateY = 45;
+        }
+        else if(_input.x < 0)
+        {
+            RotateY = -45;
+        }
+        if (_input.y > 0)
+            RotateY = 0;
+        else if (_input.y < 0) 
+        {
+            RotateY = 90;
+        }
+        transform.Rotate(new Vector3(0, RotateY, 0));
     }
     class FrameInput
     {

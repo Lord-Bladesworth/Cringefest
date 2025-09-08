@@ -7,8 +7,11 @@ public class EnemyScript : MonoBehaviour
 {
     Transform playertarget;
     
-    public Action playerReachedAction; 
+    public Action playerReachedAction;
+    public bool MovementLock;
 
+
+    int Health;
     [SerializeField]
     float MaxTargetDistance = 2;
     // Start is called before the first frame update
@@ -26,10 +29,13 @@ public class EnemyScript : MonoBehaviour
     private void LateUpdate()
     {
         MoveTowardsPlayer();
+        transform.LookAt(new Vector3(playerposition.x,0, playerposition.z));
     }
     Vector3 playerposition;
     void MoveTowardsPlayer()
     {
+        if (MovementLock)
+            return;
         Debug.Log(Vector3.Distance(transform.position, playerposition));
         playerposition = playertarget.position;
 
@@ -43,8 +49,8 @@ public class EnemyScript : MonoBehaviour
             playerReachedAction();
         }
      }
-    void OnPlayerReached()
+    void damaged(int Damage)
     {
-        Debug.Log("player has been reached!");
-    }    
+        
+    }
 }
