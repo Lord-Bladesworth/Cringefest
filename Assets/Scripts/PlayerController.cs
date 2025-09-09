@@ -10,32 +10,20 @@ public class PlayerController : MonoBehaviour
 
     Vector2 _input;
 
-
+    public Vector2 getInput { get { return _input; } }
     [SerializeField]
     float Deadzone = 0.32f;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-       
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
 
     private void LateUpdate()
     {
         ReadInput();
-       // ApplyRotation();
         ApplyMovement();
-    
+
     }
     void ReadInput()
     {
@@ -51,26 +39,7 @@ public class PlayerController : MonoBehaviour
         MoveZ = _input.y * speed;
         characterController.Move(new Vector3(MoveX, 0, MoveZ));
     }
-    float RotateY = 0;
-    void ApplyRotation()
-    {
-        RotateY = 0;
-        if(_input.x > 0)
-        {
-            RotateY = 45;
-        }
-        else if(_input.x < 0)
-        {
-            RotateY = -45;
-        }
-        if (_input.y > 0)
-            RotateY = 0;
-        else if (_input.y < 0) 
-        {
-            RotateY = 90;
-        }
-        transform.Rotate(new Vector3(0, RotateY, 0));
-    }
+
     class FrameInput
     {
         public Vector2 move;

@@ -11,6 +11,7 @@ public class EnemyScript : MonoBehaviour
     public bool MovementLock;
 
 
+    int Attack;
     int Health;
     [SerializeField]
     float MaxTargetDistance = 2;
@@ -29,14 +30,14 @@ public class EnemyScript : MonoBehaviour
     private void LateUpdate()
     {
         MoveTowardsPlayer();
-        transform.LookAt(new Vector3(playerposition.x,0, playerposition.z));
+        transform.LookAt(new Vector3(playerposition.x,1, playerposition.z));
     }
     Vector3 playerposition;
     void MoveTowardsPlayer()
     {
         if (MovementLock)
             return;
-        Debug.Log(Vector3.Distance(transform.position, playerposition));
+       // Debug.Log(Vector3.Distance(transform.position, playerposition));
         playerposition = playertarget.position;
 
         if (Vector3.Distance(transform.position, playerposition) > MaxTargetDistance)
@@ -46,6 +47,7 @@ public class EnemyScript : MonoBehaviour
         }
         else
         {
+            if(playerReachedAction!= null)
             playerReachedAction();
         }
      }
