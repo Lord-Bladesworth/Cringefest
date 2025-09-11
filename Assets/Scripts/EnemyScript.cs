@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//this only handles movement. for entity thingies, head over to the GameEntity class
 public class EnemyScript : MonoBehaviour
 {
     Transform playertarget;
@@ -11,20 +12,12 @@ public class EnemyScript : MonoBehaviour
     public bool MovementLock;
 
 
-    int Attack;
-    int Health;
     [SerializeField]
     float MaxTargetDistance = 2;
     // Start is called before the first frame update
     void Start()
     {
         playertarget= GameObject.FindObjectOfType<PlayerController>().transform;  
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
-
     }
 
     private void LateUpdate()
@@ -51,8 +44,5 @@ public class EnemyScript : MonoBehaviour
             playerReachedAction();
         }
      }
-    void damaged(int Damage)
-    {
-        
-    }
+
 }

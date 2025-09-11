@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 6435643406037366500}
   - component: {fileID: 3462007778816188509}
   - component: {fileID: 6876859919420479670}
+  - component: {fileID: 4052664429980379786}
   m_Layer: 0
   m_Name: EnemyA
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,6 +122,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovementLock: 0
   MaxTargetDistance: 5
+--- !u!114 &4052664429980379786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3425619555655170846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edc9d1d78311b5a4eaedcee19a801756, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseStats:
+    Health: 20
+    Attack: 2
+    AttackCooldown: 5
+    MovementSpeed: 1
+    targetLimit: 1
+    isInvuln: 0
 --- !u!1 &3992344542911520268
 GameObject:
   m_ObjectHideFlags: 0

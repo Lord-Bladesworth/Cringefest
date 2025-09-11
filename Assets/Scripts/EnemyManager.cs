@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.IO.LowLevel.Unsafe;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
@@ -10,7 +12,7 @@ public class EnemyManager : MonoBehaviour
    
 
     [SerializeField] GameObject _enemyPrefab;
-    [SerializeField] EnemyType[] enemyTypes;
+   // [SerializeField] EnemyType[] enemyTypes;
 
     GameObject[] _enemyPool;
 
@@ -25,6 +27,8 @@ public class EnemyManager : MonoBehaviour
     {
         poolIndex = new Queue<int>();
         _quadrants = GameObject.FindObjectsByType<SpawnQuadrant>(FindObjectsSortMode.None);
+        TimerManager timer =  GameObject.FindObjectOfType<TimerManager>();
+        timer.OnTimerTick += OnTick;
     }
     float spawnTimer = 0;
     [SerializeField]
@@ -48,9 +52,12 @@ public class EnemyManager : MonoBehaviour
     float spawnTimeLapsed = 15;
     private void LateUpdate()
     {
-        timePassed += Time.deltaTime;
-        
-        if(timePassed > spawnTimeLapsed)
+    }
+
+    private void OnTick(float timeElapsed)
+    {
+        timePassed++;
+        if (timePassed > spawnTimeLapsed)
         {
             SpawnEnemyQuadrants();
             timePassed = 0;
@@ -64,13 +71,14 @@ public class EnemyManager : MonoBehaviour
         {
             if (_quadrants[i].isActiveAndEnabled)
             {
-                SpawnEnemyInQuadrant(_quadrants[i], 2);
+                SpawnEnemyInQuadrant(_quadrants[i], 2,1);
                 break;
             }
         }
     }
-    
-    void SpawnEnemyInQuadrant(SpawnQuadrant quadrant, int enemiestoSpawn)
+
+    SpawnQuadrant lastActive;
+    void SpawnEnemyInQuadrant(SpawnQuadrant quadrant, int enemiestoSpawn,int Depth)
     {
         Debug.Log("spawning: " + enemiestoSpawn);
         for(int i=0; i< _enemyPool.Length; i++)
@@ -79,22 +87,39 @@ public class EnemyManager : MonoBehaviour
                 poolIndex.Enqueue(i);
         }
         Debug.Log("Queue size: " + poolIndex.Count);
-        while (poolIndex.Count!=0)
+
+        lastActive =  GetLastActiveQuadrant();
+        SpawnInQuadrant(poolIndex, lastActive);
+
+    }
+
+    void SpawnInQuadrant(Queue<int> poolIndex,SpawnQuadrant current,int Depthlevel =0)
+    {
+        Transform[] quadrants = current.getQuadrantSpawnpoints;
+        int _currentIndex;
+        for(int i=0; i< quadrants.Length;i++)
         {
-         for(int spawns = 0; spawns< quadrant.getQuadrantSpawnpoints.Length;spawns++)
-            {
-                int _index = poolIndex.Dequeue();
-                _enemyPool[_index].SetActive(true);
-                _enemyPool[_index].transform.position = quadrant.getQuadrantSpawnpoints[spawns].position;
-                Debug.Log("Activating index: " + _index);
-            }
+            if (poolIndex.Count == 0)
+                return;
+            _currentIndex = poolIndex.Dequeue();
+            _enemyPool[_currentIndex].SetActive(true);
+            _enemyPool[_currentIndex].transform.position = quadrants[i].position;
         }
+        poolIndex.Clear();
+        
+    }
+    private SpawnQuadrant GetLastActiveQuadrant()
+    {
+        SpawnQuadrant[] quads = _quadrants;
+        return quads.OrderByDescending(x => x.LastActivated).First();
+       
     }
 
     private void OnGUI()
     {
         GUI.Label(new Rect(50, 200, 100, 100), timePassed.ToString());
     }
+
 
 }
 
