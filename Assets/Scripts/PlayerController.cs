@@ -3,15 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Controller
 {
 
     CharacterController characterController;
     GameEntity gameEntity;
     float speed = 0.11f;
 
-    Vector2 _input;
-    public Action<Vector2> onMovementAction;
+
     public Vector2 getInput { get { return _input; } }
     [SerializeField]
     float Deadzone = 0.32f;
@@ -39,9 +38,7 @@ public class PlayerController : MonoBehaviour
     float MoveZ = 0;
     void ApplyMovement()
     {
-        if(onMovementAction!= null)
-            onMovementAction(_input);
-
+        ControllerMove();
         MoveX = _input.x * gameEntity.getEntityStats.MovementSpeed;
         MoveZ = _input.y * gameEntity.getEntityStats.MovementSpeed;
         characterController.Move(new Vector3(MoveX, 0, MoveZ));

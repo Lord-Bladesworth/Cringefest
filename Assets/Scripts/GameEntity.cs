@@ -14,9 +14,9 @@ public class GameEntity : MonoBehaviour
     
     EntityStatistics currentStats = new EntityStatistics();
     public EntityStatistics getEntityStats {  get { return currentStats; } }
-
     bool Invuln = false;
     Action OnHurt;
+    Action OnDeath;
     private void Awake()
     {
         currentStats = baseStats;
@@ -39,15 +39,14 @@ public class GameEntity : MonoBehaviour
             return;
         if (OnHurt != null)
         {
+            if ((currentStats.Health < 0) && (OnDeath != null))
+                 OnDeath();
+            
             currentStats.Health -= damage;
             OnHurt();
         }
     }
     public void Victory()
-    {
-
-    }
-    public void Defeat()
     {
 
     }

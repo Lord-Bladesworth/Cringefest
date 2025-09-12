@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //this only handles movement. for entity thingies, head over to the GameEntity class
-public class EnemyScript : MonoBehaviour
+public class EnemyScript : Controller 
 {
     Transform playertarget;
     
