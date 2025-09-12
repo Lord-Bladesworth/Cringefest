@@ -1,4 +1,3 @@
-using Palmmedia.ReportGenerator.Core.Reporting.Builders;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,16 +6,14 @@ using UnityEngine;
 //component that manages the entity's stats
 public class GameEntity : MonoBehaviour
 {
-
-
     [SerializeField]
     private EntityStatistics baseStats = new EntityStatistics();
     
     EntityStatistics currentStats = new EntityStatistics();
     public EntityStatistics getEntityStats {  get { return currentStats; } }
     bool Invuln = false;
-    Action OnHurt;
-    Action OnDeath;
+    public Action OnHurt;
+    public Action<GameObject> OnDeath;
     private void Awake()
     {
         currentStats = baseStats;
@@ -39,16 +36,25 @@ public class GameEntity : MonoBehaviour
             return;
         if (OnHurt != null)
         {
-            if ((currentStats.Health < 0) && (OnDeath != null))
-                 OnDeath();
-            
-            currentStats.Health -= damage;
             OnHurt();
         }
+        if ((currentStats.Health < 0) && (OnDeath != null))
+            OnDeath(gameObject);
+        currentStats.Health -= damage;
+       // Debug.Log("ouch! "+ currentStats.Health + " "+ gameObject.name);
+    }
+    public void OnDisabled()
+    {
+        MonoBehaviour[] components = gameObject.GetComponentsInChildren<MonoBehaviour>();
+        for (int i = 0; i < components.Length; i++)
+        {
+            components[i].StopAllCoroutines();
+        }
+
     }
     public void Victory()
     {
-
+        
     }
    
 }

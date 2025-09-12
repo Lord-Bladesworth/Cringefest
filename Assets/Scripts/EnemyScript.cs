@@ -8,6 +8,7 @@ public class EnemyScript : Controller
 {
     Transform playertarget;
     
+    GameEntity gameEntity;
     public Action playerReachedAction;
     public bool MovementLock;
 
@@ -17,6 +18,7 @@ public class EnemyScript : Controller
     // Start is called before the first frame update
     void Start()
     {
+        gameEntity = GetComponent<GameEntity>();
         playertarget= GameObject.FindObjectOfType<PlayerController>().transform;  
     }
 
@@ -36,7 +38,7 @@ public class EnemyScript : Controller
         if (Vector3.Distance(transform.position, playerposition) > MaxTargetDistance)
         {
             playerposition = new Vector3(playerposition.x, 0, playerposition.z);
-            transform.position = Vector3.MoveTowards(transform.position, playertarget.position, 0.06f);
+            transform.position = Vector3.MoveTowards(transform.position, playertarget.position, gameEntity.getEntityStats.MovementSpeed);
         }
         else
         {

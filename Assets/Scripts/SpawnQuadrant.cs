@@ -17,15 +17,22 @@ public class SpawnQuadrant : MonoBehaviour
     SpawnQuadrant[] neighboringQuadrants;
 
     SpawnQuadrant[] getNeighbors { get { return neighboringQuadrants; } }
+    Transform[] Spawnpoints;
 
     [SerializeField]
-    Transform[] Spawnpoints;
+    Transform SpawnpointParent;
     public Transform[] getQuadrantSpawnpoints { get { return Spawnpoints; } }
 
     // Start is called before the first frame update
     void Start()
     {
         timerManager = GameObject.FindObjectOfType<TimerManager>();
+        Spawnpoints = new Transform[SpawnpointParent.childCount];
+        for(int i=0; i< Spawnpoints.Length;i++)
+        {
+            Spawnpoints[i] = SpawnpointParent.GetChild(i);
+        }
+
         if(Spawnpoints.Length ==0 || Spawnpoints == null)
         {
             Debug.LogError("Warning: quadrant " + gameObject.name + " has no spawnpoints assigned!");

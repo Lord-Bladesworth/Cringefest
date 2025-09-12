@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class TimerManager : MonoBehaviour
@@ -31,6 +29,7 @@ public class TimerManager : MonoBehaviour
     }
    IEnumerator TickforSeconds()
     {
+       
         Debug.Log("Ticking starts");
         while(isTimerRunning)
         {
@@ -43,5 +42,9 @@ public class TimerManager : MonoBehaviour
         yield return null;
     }
 
+    public void StopTimer()
+    {
+        isTimerRunning = false;
+    }
     
 }

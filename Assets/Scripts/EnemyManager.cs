@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.IO.LowLevel.Unsafe;
-using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
@@ -16,16 +14,19 @@ public class EnemyManager : MonoBehaviour
 
     GameObject[] _enemyPool;
 
-    Queue<int> poolIndex;
+    Queue<int> poolIndexQueue;
 
     [SerializeField]
     int MaxEnemySpawn;
     [SerializeField]
-    int InitialSpawnInterval;
+    int SpawnInterval = 7;
+
+    int killtally = 0;
+    int getTally { get { return killtally; } }
     // Start is called before the first frame update
     void Start()
     {
-        poolIndex = new Queue<int>();
+        poolIndexQueue = new Queue<int>();
         _quadrants = GameObject.FindObjectsByType<SpawnQuadrant>(FindObjectsSortMode.None);
         TimerManager timer =  GameObject.FindObjectOfType<TimerManager>();
         timer.OnTimerTick += OnTick;
@@ -42,6 +43,7 @@ public class EnemyManager : MonoBehaviour
         {
             _enemyPool[i] = Instantiate(_enemyPrefab,gameObject.transform);
             _enemyPool[i].SetActive(false);
+            _enemyPool[i].GetComponent<GameEntity>().OnDeath += onEnemyDeath;
         }
     }
     private void Awake()
@@ -49,15 +51,33 @@ public class EnemyManager : MonoBehaviour
         PoolEnemies();
     }
 
-    float spawnTimeLapsed = 15;
+
     private void LateUpdate()
     {
     }
+    private void onEnemyDeath(GameObject enemyObject)
+    {
+        killtally++;
+        enemyObject.SetActive(false);
 
+    }
+
+    public void ClearStage()
+    {
+        for(int i=0; i< _enemyPool.Length; i++)
+        {
+            if (_enemyPool[i].activeSelf)
+            {
+                _enemyPool[i].SetActive(true);
+                
+            }
+        }
+        gameObject.SetActive(false);
+    }
     private void OnTick(float timeElapsed)
     {
         timePassed++;
-        if (timePassed > spawnTimeLapsed)
+        if (timePassed > SpawnInterval)
         {
             SpawnEnemyQuadrants();
             timePassed = 0;
@@ -66,7 +86,7 @@ public class EnemyManager : MonoBehaviour
 
     void SpawnEnemyQuadrants()
     {
-        Debug.Log("quadrants count:" + _quadrants.Length);
+       // Debug.Log("quadrants count:" + _quadrants.Length);
         for(int i=0; i< _quadrants.Length; i++)
         {
             if (_quadrants[i].isActiveAndEnabled)
@@ -80,16 +100,16 @@ public class EnemyManager : MonoBehaviour
     SpawnQuadrant lastActive;
     void SpawnEnemyInQuadrant(SpawnQuadrant quadrant, int enemiestoSpawn,int Depth)
     {
-        Debug.Log("spawning: " + enemiestoSpawn);
+      //  Debug.Log("spawning: " + enemiestoSpawn);
         for(int i=0; i< _enemyPool.Length; i++)
         {
             if (!_enemyPool[i].activeSelf)
-                poolIndex.Enqueue(i);
+                poolIndexQueue.Enqueue(i);
         }
-        Debug.Log("Queue size: " + poolIndex.Count);
+      //  Debug.Log("Queue size: " + poolIndex.Count);
 
         lastActive =  GetLastActiveQuadrant();
-        SpawnInQuadrant(poolIndex, lastActive);
+        SpawnInQuadrant(poolIndexQueue, lastActive);
 
     }
 

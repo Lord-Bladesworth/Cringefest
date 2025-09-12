@@ -17,7 +17,7 @@ public class Hitbox : MonoBehaviour
         if (other.gameObject.GetComponent<GameEntity>())
         {
             targets.Add(other.gameObject);
-            Debug.Log("Enter!");
+            //Debug.Log("Enter!");
         }
     }
 

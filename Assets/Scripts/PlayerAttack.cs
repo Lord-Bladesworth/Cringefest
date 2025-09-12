@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    AttackBehaviour attackBehaviour;
+    [SerializeField]
+    MeshRenderer hitbox;
+    private void Awake()
     {
+        attackBehaviour = GetComponent<AttackBehaviour>();
+        attackBehaviour.OnAttack += PlayAttackAnimation;
+    }
+
+    void PlayAttackAnimation()
+    {
+        StartCoroutine(showHitbox());
+    }
+    IEnumerator showHitbox()
+    {
+        hitbox.enabled = true;
+        yield return new WaitForSeconds(1);
+        hitbox.enabled = false;
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

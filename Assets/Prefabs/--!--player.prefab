@@ -881,6 +881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c7e13b629ba1a49a82cb5a6ad6c127, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _input: {x: 0, y: 0}
   Deadzone: 0.23
 --- !u!143 &55474655697059823
 CharacterController:
@@ -933,6 +934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ab90395b14c7f468130825842f175b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitbox: {fileID: 0}
 --- !u!114 &7303576711655518264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -947,7 +949,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseStats:
     Health: 20
-    Attack: 1
+    Attack: 5
     AttackCooldown: 5
     MovementSpeed: 0.18
     targetLimit: 1

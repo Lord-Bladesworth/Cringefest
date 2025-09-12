@@ -19,24 +19,45 @@ public class EntityAudio : MonoBehaviour
         controller = gameEntity.GetComponent<Controller>();
         attackBehaviour = gameEntity.GetComponent<AttackBehaviour>();
 
-        controller.OnMovement += playMoveSFX;
+        controller.OnMovement += PlayMoveSFX;
+        attackBehaviour.OnAttack += PlayAttackSFX;
+        gameEntity.OnHurt += PlayHitSFX;
       
     }
-
+    AudioClip nowPlaying { get { return source.clip; } set { source.clip = value; } }
+    AudioClip current;
     private void FixedUpdate()
     {
-        //handle "now playing"
-        //check what audio is currently playing.
-        //if a new audio is needed, then play the new audio
-
+        
+       
     }
 
-    void playMoveSFX(Vector2 input)
+    void PlayMoveSFX(Vector2 input)
     {
-
+       
 
     }    
 
+    void PlayAttackSFX()
+    {
+        //Debug.Log("Attack!");
+
+    }
+    void PlayHitSFX()
+    {
+
+    }
+    AudioClip checkLibrary(audioCueEnum cue)
+    {
+        for(int i=0; i< audioCues.Length; i++)
+        {
+            if (audioCues[i].audioCue == cue)
+                return audioCues[i].clip;
+        }
+        Debug.LogError("AUDIO CUE IS MISSING");
+        return null;
+
+    }
 }
 public enum audioCueEnum 
 {

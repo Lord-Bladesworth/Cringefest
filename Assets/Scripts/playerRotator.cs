@@ -27,8 +27,8 @@ public class playerRotator : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        ApplyRotationToModel(); //deal with this for now
-        //ApplyRotation();
+       ApplyRotationToModel(); //deal with this for now
+     //   ApplyRotation();
     }
     Vector3 lookAtPoint;
     void ApplyRotationToModel()
